@@ -1,0 +1,56 @@
+@if (restaurant() && !currentReservation()) {
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Create Reservation</mat-card-title>
+            <mat-card-subtitle>Make a reservation for your table</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form
+                class="flex flex-col"
+                [formGroup]="form"
+                (ngSubmit)="submit()"
+            >
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput autocomplete="off" formControlName="Name"/>
+                    @if (form.controls.Name.errors && form.controls.Name.touched) {
+                        <mat-error>Name is missing or is too long</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Party Size</mat-label>
+                    <input matInput type="number" formControlName="PartySize"/>
+                    @if (form.controls.PartySize.errors && form.controls.PartySize.touched) {
+                        <mat-error>Please input a number between 1 and {{CONSTANTS.MAX_SEATS}}</mat-error>
+                    }
+                </mat-form-field>
+
+                <button
+                    (keydown.enter)="(submit())"
+                    color="primary"
+                    mat-raised-button
+                    type="submit"
+                    [disabled]="form.invalid || isBusy"
+                >
+                    {{isBusy ? 'Creating Reservation...' : 'Create Reservation'}}
+                </button>
+            </form>
+
+            <div class="mt-5 border-t-2 border-gray-300 flex flex-col items-stretch gap-2" >
+                <mat-label class="mt-4 text-center">Do you have an existing reservation?</mat-label>
+
+                <button
+                    color="primary"
+                    mat-stroked-button
+                    routerLink="/reservations/find"
+                >
+                    <mat-icon>search</mat-icon>
+                    Find Reservation
+                </button>
+            </div>
+
+
+        </mat-card-content>
+    </mat-card>
+}

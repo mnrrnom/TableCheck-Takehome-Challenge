@@ -1,0 +1,44 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Restaurant Tables Status</mat-card-title>
+        <mat-card-subtitle>
+            <div class="flex flex-col justify-center" >
+                <span>This shows the current status of the tables in the restaurant</span>
+                <div class="flex items-center">
+                    <mat-icon class="text-green-800 text-sm">radio_button_unchecked</mat-icon> Table is available
+                </div>
+                <div class="flex items-center">
+                    <mat-icon class="text-orange-400 text-sm">circle</mat-icon> Party has been assigned a table and is ready to be seated
+                </div>
+                <div class="flex items-center">
+                    <mat-icon class="text-red-800 text-sm">circle</mat-icon> Party is seated
+                </div>
+            </div>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="flex flex-row justify-center">
+            <div class="flex flex-wrap items-center justify-center gap-2 p-4">
+                @for (status of seatStatuses(); track $index) {
+                    <div
+                        class="w-8 h-8 rounded-full border-2 flex items-center justify-center "
+                        [ngClass]="{
+                            'border-red-800': status === 'Seated',
+                            'border-green-800': status === 'Available',
+                            'border-orange-400': status === 'TableReady'
+                        }"
+                    >
+                        @if (status === 'Seated') {
+                            <mat-icon class="text-red-800">circle</mat-icon>
+                        }
+
+                        @if (status === 'TableReady') {
+                            <mat-icon class="text-orange-400">circle</mat-icon>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+

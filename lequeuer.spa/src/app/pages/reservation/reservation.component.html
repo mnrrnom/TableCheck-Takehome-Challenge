@@ -1,0 +1,11 @@
+<div class="flex flex-row justify-center mt-4">
+    <div class="flex flex-col w-full sm:w-[400px] gap-4">
+        @if (restaurantId) {
+            <app-tables-status-checker [restaurantId]="restaurantId" ></app-tables-status-checker>
+            <app-queue-position-display></app-queue-position-display>
+            <app-create-reservation-form></app-create-reservation-form>
+            <app-check-in></app-check-in>
+        }
+    </div>
+</div>
+
