@@ -1,5 +1,46 @@
-# Run project locally
+# Hello, and welcome to the Remote Waitlist Manager project, Lequeuer!
 
+# Project Overview
+## Backend: REST API (.Net Core 9) + RTC
+- The core components of the backend are the ReservationsService, ReservationsHub, and the RestaurantsService.
+- The `RestaurantsService` is responsible for keeping track of the restaurant's available seats.
+- The `ReservationsServices` contains the logic for managing reservations, including adding new reservations, checking in parties, and queueing.
+- The `ReservationsHub` is a SignalR hub that allows real-time communication between the server and clients. It notifies clients when their reservation status changes, such as when it's their turn to check in, or when there are changes made by other clients. This allows for a seamless experience where users can see updates in real-time without needing to refresh the page.
+- The backend uses a vertical slice architecture.
+- Functionalities are grouped in the Modules folder. eg: Features related to reservations are in the Modules/ReservationModule folder.
+
+## Frontend: SPA (Angular, Angular Material)
+- The core components of the frontend are the ff:
+  - `TablesStatusDisplay`: This component displays the status of the restaurant's tables, including the number of available seats and the current reservations' statuses
+  - `QueuePositionDisplay`: This component displays the user's position in the queue. They can see how many parties are ahead of them and how many seats are available.
+  - `CheckIn`: This component shows the current user's reservation status and allows them to check in when it's their turn.
+  - `RtcService`: This service is responsible for managing the real-time communication with the backend using SignalR. 
+  It connects to the ReservationsHub and listens for updates on reservation statuses for the **current** restaurant only.
+  - `ReservationService`: This service is responsible for managing the reservation process, including adding new reservations and checking in for the frontend.
+
+## Example interaction flow - Reservation creation
+
+
+## Considerations and Assumptions
+> Hardcoded to 3 seconds per person. Example: A party of 4 takes 12 seconds to complete the service.
+- Normally, there would be a terminal or device that the restaurant staff would use to finish the service for a party. 
+To simulate this, I created the Dequeuer service which will finish the service for a party after ([party size] * 3) seconds.
+- The app does not handle the case where a party creates a reservation and then leaves the restaurant without checking in.
+- The app assumes that the user will go to the physical restaurant and will be presented with a QR code or some other means that will
+lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
+
+# Run project locally
+1. Clone the repository
+2. Cd into the root directory of the project (where docker-compose.yaml is located)
+3. Run `docker compose up` to start the application
+   - This should do the ff:
+     - Build the frontend and backend image
+     - Create the network
+     - Create the volumes
+     - Create the database
+     - Run the migrations
+     - Start the backend and frontend services
+4. Open your browser and navigate to `http://localhost:4200` to access the application
 
 # TableCheck SWE Fullstack Take-Home Assignment
 
