@@ -20,6 +20,18 @@ A working demo of the project can be found at: https://dev.azalea.life/
 
 # Project Overview
 
+## Functionality overview
+1. The app allows users to join a waitlist for a restaurant by entering their name and party size.
+2. Once they join the waitlist for a restaurant, they can check their position in the queue and see the status of their reservation.
+3. When there are enough seats available when they create their reservation, their reservation is given a TableReady status.
+4. When there are NOT enough seats available when they create their reservation, their reservation is given a Waiting status.
+5. The oldest reservation with the TableReady status will be notified to check in.
+6. When the user checks in, the reservation is updated to the Seated status. 
+7. The Dequeuer service will automatically finish the service for the party after [party size] * 3 seconds and transition it to the Vacated state. 
+8. When a reservation is dequeued, the system gets the oldest reservation with the Waiting status and checks if there are enough seats available for it. 
+9. If there are enough seats available, the reservation is updated to the TableReady status.
+10. If there are NOT enough seats available, the reservation is kept in the Waiting status.
+
 ## Backend: REST API (.Net Core 9) + RTC
 
 - The core components of the backend are the ReservationsService, ReservationsHub, and the RestaurantsService.
