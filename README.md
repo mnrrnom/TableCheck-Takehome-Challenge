@@ -45,33 +45,22 @@
   lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
 
 ## Example interaction flow - Reservation creation
+It might be easier to understand the resposibilities of the different components by looking at an example interaction. <br/>
+The following diagram illustrates the flow of data between the different components when a user creates a reservation. <br/> 
+Text explanation follows the diagram
 
-<table style="width: 100%">
-    <tr style="width: 100%">
-    <td style="width: 60%">
-      <img src="https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f" alt="lequeuer-data-flow" width="100%"/>
-    </td>
-    <td style="text-wrap: wrap">
-        <ol>
-            <li><code>Client Reservation Service</code> sends POST request to <code>Reservation Endpoint</code></li>
-            <li>
-                <code>Backend Reservation Endpoint</code> passes the request to <code>ReservationsService</code>
-                <ul>
-                    <li>2.1<code>ReservationsService</code> validates request data, creates reservation in DB</li>
-                    <li>2.2<code>ReservationsService</code> calls <strong>ReservationDataUpdated</strong> in the <code>ReservationsHub</code></li>
-                </ul>
-            </li>
-            <li><code>ReservationsService</code> returns new reservation to <code>Backend Reservation Endpoint</code></li>
-            <li><code>Backend Reservation Endpoint</code> returns 201 to <code>Client Reservation Service</code></li>
-            <li><code>ReservationsHub</code> publishes <strong>OnReservationDataUpdated</strong> in RTC channel</li>
-            <li><code>Client Reservation Service</code> receives <strong>OnReservationDataUpdated</strong> message and emits a <strong>OnReservationDataUpdated</strong> message on the frontend</li>
-            <li><code>Client Reservation Service</code> gets the message and sends a GET request for new data.</li>
-            <li>The service sets the new data into a signal which the interested components are subscribed to</li>
-            <li>Each component reacts to changes in the data automatically</li>
-        </ol>
-    </td>
-  </tr>
-</table>
+![lequeuer-data-flow](https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f)
+1. Client **`ReservationService`** sends POST request to **`ReservationEndpoint`**
+2. Backend **`ReservationEndpoint`** passes the request to **`ReservationsService`**
+   1. **`ReservationsService`** validates request data, creates reservation in DB
+   2. **`ReservationsService`** calls _ReservationDataUpdated_ in the **`ReservationsHub`**
+3. **`ReservationsService`** returns new reservation to Backend **`ReservationEndpoint`**
+4. **`ReservationEndpoint`** returns 201 to Client **`ReservationService`**
+5. **`ReservationsHub`** publishes _OnReservationDataUpdated_ in RTC channel
+6. Client **`RTCService`** receives _OnReservationDataUpdated_ message and emits a _OnReservationDataUpdated_ message on the frontend
+7. Client **`ReservationService`** gets the message and sends a GET request to **`ReservationsEndpoint`** for new data.
+8. The service sets the new data into a signal.
+9. The signal propagates to the interested components
 
 # Run project locally
 
