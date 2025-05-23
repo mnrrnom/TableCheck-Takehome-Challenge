@@ -67,11 +67,12 @@ Text explanation follows the diagram
 1. Clone the repository
 2. Cd into the root directory of the project (where docker-compose.yaml is located)
 3. Run `docker compose up` to start the application
-    - This should do the ff:
+    - This should do the ff automatically:
         - Build the frontend and backend image
         - Create the network
         - Create the volumes
         - Create the database
+           - The database is mapped to port 3399 to avoid port conflicts in case the tester already has a mysql instance
         - Run the migrations
         - Start the backend and frontend services
 4. Open your browser and navigate to `http://localhost:4200` to access the application
