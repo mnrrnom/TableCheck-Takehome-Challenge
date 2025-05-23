@@ -1,68 +1,120 @@
 # Hello, and welcome to the Remote Waitlist Manager project, Lequeuer!
 
-# Project Overview
+## Project Overview
+
 ## Backend: REST API (.Net Core 9) + RTC
+
 - The core components of the backend are the ReservationsService, ReservationsHub, and the RestaurantsService.
 - The `RestaurantsService` is responsible for keeping track of the restaurant's available seats.
-- The `ReservationsServices` contains the logic for managing reservations, including adding new reservations, checking in parties, and queueing.
-- The `ReservationsHub` is a SignalR hub that allows real-time communication between the server and clients. It notifies clients when their reservation status changes, such as when it's their turn to check in, or when there are changes made by other clients. This allows for a seamless experience where users can see updates in real-time without needing to refresh the page.
+- The `ReservationsServices` contains the logic for managing reservations, including adding new reservations, checking
+  in parties, and queueing.
+- The `ReservationsHub` is a SignalR hub that allows real-time communication between the server and clients. It notifies
+  clients when their reservation status changes, such as when it's their turn to check in, or when there are changes
+  made by other clients. This allows for a seamless experience where users can see updates in real-time without needing
+  to refresh the page.
 - The backend uses a vertical slice architecture.
-- Functionalities are grouped in the Modules folder. eg: Features related to reservations are in the Modules/ReservationModule folder.
+- Functionalities are grouped in the Modules folder. eg: Features related to reservations are in the
+  Modules/ReservationModule folder.
 
 ## Frontend: SPA (Angular, Angular Material)
+
 - The core components of the frontend are the ff:
-  - `TablesStatusDisplay`: This component displays the status of the restaurant's tables, including the number of available seats and the current reservations' statuses
-  - `QueuePositionDisplay`: This component displays the user's position in the queue. They can see how many parties are ahead of them and how many seats are available.
-  - `CheckIn`: This component shows the current user's reservation status and allows them to check in when it's their turn.
-  - `RtcService`: This service is responsible for managing the real-time communication with the backend using SignalR. 
-  It connects to the ReservationsHub and listens for updates on reservation statuses for the **current** restaurant only.
-  - `ReservationService`: This service is responsible for managing the reservation process, including adding new reservations and checking in for the frontend.
-
-## Example interaction flow - Reservation creation
-![lequeuer-data-flow](https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f)
-
+    - `TablesStatusDisplay`: This component displays the status of the restaurant's tables, including the number of
+      available seats and the current reservations' statuses
+    - `QueuePositionDisplay`: This component displays the user's position in the queue. They can see how many parties
+      are ahead of them and how many seats are available.
+    - `CheckIn`: This component shows the current user's reservation status and allows them to check in when it's their
+      turn.
+    - `RtcService`: This service is responsible for managing the real-time communication with the backend using SignalR.
+      It connects to the ReservationsHub and listens for updates on reservation statuses for the **current** restaurant
+      only.
+    - `ReservationService`: This service is responsible for managing the reservation process, including adding new
+      reservations and checking in for the frontend.
 
 ## Considerations and Assumptions
+
 > Hardcoded to 3 seconds per person. Example: A party of 4 takes 12 seconds to complete the service.
-- Normally, there would be a terminal or device that the restaurant staff would use to finish the service for a party. 
-To simulate this, I created the Dequeuer service which will finish the service for a party after ([party size] * 3) seconds.
-- The app does not handle the case where a party creates a reservation and then leaves the restaurant without checking in.
-- The app assumes that the user will go to the physical restaurant and will be presented with a QR code or some other means that will
-lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
+
+- Normally, there would be a terminal or device that the restaurant staff would use to finish the service for a party.
+  To simulate this, I created the Dequeuer service which will finish the service for a party after ([party size] * 3)
+  seconds.
+- The app does not handle the case where a party creates a reservation and then leaves the restaurant without checking
+  in.
+- The app assumes that the user will go to the physical restaurant and will be presented with a QR code or some other
+  means that will
+  lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
+
+## Example interaction flow - Reservation creation
+
+<table style="width: 100%">
+    <tr style="width: 100%">
+    <td style="width: 60%">
+      <img src="https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f" alt="lequeuer-data-flow" width="100%"/>
+    </td>
+    <td style="text-wrap: wrap">
+        <ol>
+            <li><code>Client Reservation Service</code> sends POST request to <code>Reservation Endpoint</code></li>
+            <li>
+                <code>Backend Reservation Endpoint</code> passes the request to <code>ReservationsService</code>
+                <ul>
+                    <li>2.1<code>ReservationsService</code> validates request data, creates reservation in DB</li>
+                    <li>2.2<code>ReservationsService</code> calls <strong>ReservationDataUpdated</strong> in the <code>ReservationsHub</code></li>
+                </ul>
+            </li>
+            <li><code>ReservationsService</code> returns new reservation to <code>Backend Reservation Endpoint</code></li>
+            <li><code>Backend Reservation Endpoint</code> returns 201 to <code>Client Reservation Service</code></li>
+            <li><code>ReservationsHub</code> publishes <strong>OnReservationDataUpdated</strong> in RTC channel</li>
+            <li><code>Client Reservation Service</code> receives <strong>OnReservationDataUpdated</strong> message and emits a <strong>OnReservationDataUpdated</strong> message on the frontend</li>
+            <li><code>Client Reservation Service</code> gets the message and sends a GET request for new data.</li>
+            <li>The service sets the new data into a signal which the interested components are subscribed to</li>
+            <li>Each component reacts to changes in the data automatically</li>
+        </ol>
+    </td>
+  </tr>
+</table>
 
 # Run project locally
+
 1. Clone the repository
 2. Cd into the root directory of the project (where docker-compose.yaml is located)
 3. Run `docker compose up` to start the application
-   - This should do the ff:
-     - Build the frontend and backend image
-     - Create the network
-     - Create the volumes
-     - Create the database
-     - Run the migrations
-     - Start the backend and frontend services
+    - This should do the ff:
+        - Build the frontend and backend image
+        - Create the network
+        - Create the volumes
+        - Create the database
+        - Run the migrations
+        - Start the backend and frontend services
 4. Open your browser and navigate to `http://localhost:4200` to access the application
 
 # TableCheck SWE Fullstack Take-Home Assignment
 
-Remote Waitlist Manager is a full-stack application designed to handle the waitlist of your restaurant. It manages seating, queueing, and notifications for your diners. **Multiple parties** should be able to join your restaurant's waitlist **concurrently**. Instead of waiting in line to write your name on a piece of paper, you can now join the waitlist virtually and get notified when your table is ready. This will increase your restaurant's efficiency and provide a better experience for your customers.
+Remote Waitlist Manager is a full-stack application designed to handle the waitlist of your restaurant. It manages
+seating, queueing, and notifications for your diners. **Multiple parties** should be able to join your restaurant's
+waitlist **concurrently**. Instead of waiting in line to write your name on a piece of paper, you can now join the
+waitlist virtually and get notified when your table is ready. This will increase your restaurant's efficiency and
+provide a better experience for your customers.
 
 The user flow is as follows:
 
-- A party of diners go to their favorite restaurant. It's fully booked, but the restaurant gives the option to join a virtual waitlist accessible via browser.
+- A party of diners go to their favorite restaurant. It's fully booked, but the restaurant gives the option to join a
+  virtual waitlist accessible via browser.
 - When the diner opens the app they're asked to input their name and party size.
 - After joining the waitlist, they can check the app to verify if it's their turn.
-- When the table is ready for them, they check-in via the app and get seated.
+- When the table is ready for them, they check in via the app and get seated.
 
 ## Technical Requirements
 
 ### Frontend
 
-Our current tech stack uses ReactJS, TypeScript and isomorphic SSR, but you shouldn’t be limited to that. If you feel more proficient with a different stack, just go for it! Feel free to use a SPA, islands, traditional SSR, vue, angular, ember, vanilla JS, etc.
+Our current tech stack uses ReactJS, TypeScript and isomorphic SSR, but you shouldn’t be limited to that. If you feel
+more proficient with a different stack, just go for it! Feel free to use an SPA, islands, traditional SSR, vue, angular,
+ember, vanilla JS, etc.
 
 ### Backend
 
-Similarly, while our stack uses Ruby on Rails with MongoDB, you’re free to use any mainstream language/framework and storage.
+Similarly, while our stack uses Ruby on Rails with MongoDB, you’re free to use any mainstream language/framework and
+storage.
 
 Whatever database you decide to use, it should be runnable with a simple `docker compose up`.
 
@@ -108,7 +160,7 @@ When a party completes service:
 2. Include this README in your repository, with clear instructions for setting up and running the project locally.
 3. Include a brief explanation of your architecture decisions in the README or a separate document.
 
-Please grant access to your repo for these following github users
+Please grant access to your repo for these following GitHub users
 
 - `daniellizik` - Daniel Lizik, Engineering Manager
 - `LuginaJulia` - Julia Lugina, Senior Software Engineer
@@ -118,9 +170,14 @@ Please grant access to your repo for these following github users
 Your submission will be evaluated based on:
 
 1. Functionality: Does the application work as specified?
-2. Code Quality: Is the code well-structured, readable, and maintainable? Add sufficient comments in places where you think it would help other contributors to onboard more quickly to understand your code.
+2. Code Quality: Is the code well-structured, readable, and maintainable? Add sufficient comments in places where you
+   think it would help other contributors to onboard more quickly to understand your code.
 3. Architecture: Are there clear separations of concerns and good design patterns used?
-4. Customer Focus: Is the user experience intuitive? Would _you_ use this application if you were a diner? _Please_ play around with your app as if you were a customer prior to submission.
-5. QA: Are you confident in the quality of your product? If you had to refactor or add new features, would you be able to do so without breaking the existing functionality? There is no guideline on how many tests you should write, what type of tests you should write, what level of coverage you need to achieve, etc. We leave it to you to decide how to ensure a level of quality that results in your customers trusting your product.
+4. Customer Focus: Is the user experience intuitive? Would _you_ use this application if you were a diner? _Please_ play
+   around with your app as if you were a customer prior to submission.
+5. QA: Are you confident in the quality of your product? If you had to refactor or add new features, would you be able
+   to do so without breaking the existing functionality? There is no guideline on how many tests you should write, what
+   type of tests you should write, what level of coverage you need to achieve, etc. We leave it to you to decide how to
+   ensure a level of quality that results in your customers trusting your product.
 
 ### Good luck!
