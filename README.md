@@ -64,7 +64,8 @@ It might be easier to understand the resposibilities of the different components
 The following diagram illustrates the flow of data between the different components when a user creates a reservation. <br/> 
 Text explanation follows the diagram
 
-![lequeuer-data-flow](https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f)
+![lequeuer-data-flow](https://github.com/user-attachments/assets/6969bf61-e174-4081-aff2-d3a9926dc752)
+
 1. Client **`ReservationService`** sends POST request to **`ReservationEndpoint`**
 2. Backend **`ReservationEndpoint`** passes the request to **`ReservationsService`**
    1. **`ReservationsService`** validates request data, creates reservation in DB
