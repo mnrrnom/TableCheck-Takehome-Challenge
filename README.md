@@ -19,6 +19,7 @@
   - `ReservationService`: This service is responsible for managing the reservation process, including adding new reservations and checking in for the frontend.
 
 ## Example interaction flow - Reservation creation
+![lequeuer-data-flow](https://github.com/user-attachments/assets/a54d110c-3f16-49a5-a45f-239c6df09c0f)
 
 
 ## Considerations and Assumptions
