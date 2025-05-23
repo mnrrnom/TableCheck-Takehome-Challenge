@@ -1,5 +1,20 @@
 # Hello, and welcome to the Remote Waitlist Manager project, Lequeuer!
 
+# Run project locally
+
+1. Clone the repository
+2. Cd into the root directory of the project (where docker-compose.yaml is located)
+3. Run `docker compose up` to start the application
+    - This should do the ff automatically:
+        - Build the frontend and backend image
+        - Create the network
+        - Create the volumes
+        - Create the database
+            - The database is mapped to port 3399 to avoid port conflicts in case the tester already has a mysql instance
+        - Run the migrations
+        - Start the backend and frontend services
+4. Open your browser and navigate to `http://localhost:4200` to access the application
+
 ## Project Overview
 
 ## Backend: REST API (.Net Core 9) + RTC
@@ -61,21 +76,6 @@ Text explanation follows the diagram
 7. Client **`ReservationService`** gets the message and sends a GET request to **`ReservationsEndpoint`** for new data.
 8. The service sets the new data into a signal.
 9. The signal propagates to the interested components
-
-# Run project locally
-
-1. Clone the repository
-2. Cd into the root directory of the project (where docker-compose.yaml is located)
-3. Run `docker compose up` to start the application
-    - This should do the ff automatically:
-        - Build the frontend and backend image
-        - Create the network
-        - Create the volumes
-        - Create the database
-           - The database is mapped to port 3399 to avoid port conflicts in case the tester already has a mysql instance
-        - Run the migrations
-        - Start the backend and frontend services
-4. Open your browser and navigate to `http://localhost:4200` to access the application
 
 # TableCheck SWE Fullstack Take-Home Assignment
 
