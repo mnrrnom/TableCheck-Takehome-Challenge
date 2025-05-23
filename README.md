@@ -1,21 +1,24 @@
 # Hello, and welcome to the Remote Waitlist Manager project, Lequeuer!
+A working demo of the project can be found at: https://dev.azalea.life/
 
-# Run project locally
+# Table of Contents
 
-1. Clone the repository
-2. Cd into the root directory of the project (where docker-compose.yaml is located)
-3. Run `docker compose up` to start the application
-    - This should do the ff automatically:
-        - Build the frontend and backend image
-        - Create the network
-        - Create the volumes
-        - Create the database
-            - The database is mapped to port 3399 to avoid port conflicts in case the tester already has a mysql instance
-        - Run the migrations
-        - Start the backend and frontend services
-4. Open your browser and navigate to `http://localhost:4200` to access the application
+- [Project Overview](#project-overview)
+- [Backend Overview: REST API (.Net Core 9) + RTC](#backend-rest-api-net-core-9--rtc)
+- [Frontend Overview: SPA (Angular, Angular Material)](#frontend-spa-angular-angular-material)
+- [Considerations and Assumptions](#considerations-and-assumptions)
+- [Example interaction flow - Reservation creation](#example-interaction-flow---reservation-creation)
+- [Run project locally](#run-project-locally)
 
-## Project Overview
+
+- SECTIONS AFTER THIS WERE COPIED FROM THE ASSIGNMENT
+- [TableCheck SWE Fullstack Take-Home Assignment](#tablecheck-swe-fullstack-take-home-assignment)
+- [Technical Requirements](#technical-requirements)
+- [Business Requirements](#business-requirements)
+- [Submission Guidelines](#submission-guidelines)
+- [Evaluation Criteria](#evaluation-criteria)
+
+# Project Overview
 
 ## Backend: REST API (.Net Core 9) + RTC
 
@@ -48,16 +51,13 @@
 
 ## Considerations and Assumptions
 
-> Hardcoded to 3 seconds per person. Example: A party of 4 takes 12 seconds to complete the service.
-
-- Normally, there would be a terminal or device that the restaurant staff would use to finish the service for a party.
-  To simulate this, I created the Dequeuer service which will finish the service for a party after ([party size] * 3)
+- Project assumes that there would be a terminal or device that the restaurant staff would use to finish the service for a party.
+  To simulate this, the `Dequeuer` service was created. It will finish the service for a party after [party size] * 3
   seconds.
-- The app does not handle the case where a party creates a reservation and then leaves the restaurant without checking
+- The app does handle cases where a party creates a reservation and then leaves the restaurant without checking
   in.
 - The app assumes that the user will go to the physical restaurant and will be presented with a QR code or some other
-  means that will
-  lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
+  means that will lead them to the `/restaurants/{restaurantId}` page. This will take them to the restaurant's reservation page.
 
 ## Example interaction flow - Reservation creation
 It might be easier to understand the resposibilities of the different components by looking at an example interaction. <br/>
@@ -76,6 +76,21 @@ Text explanation follows the diagram
 7. Client **`ReservationService`** gets the message and sends a GET request to **`ReservationsEndpoint`** for new data.
 8. The service sets the new data into a signal.
 9. The signal propagates to the interested components
+
+# Run project locally
+
+1. Clone the repository~~~~
+2. Cd into the root directory of the project (where docker-compose.yaml is located)
+3. Run `docker compose up` to start the application
+    - This should do the ff automatically:
+        - Build the frontend and backend image
+        - Create the network
+        - Create the volumes
+        - Create the database
+           - The database is mapped to port 3399 to avoid port conflicts in case the tester already has a mysql instance
+        - Run the migrations
+        - Start the backend and frontend services
+4. Open your browser and navigate to `http://localhost:4200` to access the application
 
 # TableCheck SWE Fullstack Take-Home Assignment
 
