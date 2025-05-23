@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: lequeuer.api/Dockerfile
+    container_name: lequeuer-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - AppSettings__ConnectionString=Server=host.docker.internal;Port=3399;Database=lequeuer;User=root;Password=root
+  
+  mysql:
+    image: mysql:8.0.24
+    container_name: lequeuer-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=lequeuer
+    ports:
+      - "3399:3306"
+    volumes:
+      - lequeuer-data:/var/lib/mysql
+  
+  ui:
+    build: ./lequeuer.spa
+    container_name: lequeuer-ui
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api
+
+volumes:
+  lequeuer-data:
+
+networks:
+  lequeuer:

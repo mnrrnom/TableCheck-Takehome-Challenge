@@ -17,4 +17,20 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\browser\chunk-7L75P3VQ.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\chunk-7L75P3VQ.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\chunk-ZCTKYEBK.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\chunk-ZCTKYEBK.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\favicon.ico" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\index.html" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\main.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\main.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\polyfills.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\polyfills.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\styles.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\browser\styles.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\prerendered-routes.json" />
+  </ItemGroup>
+
 </Project>

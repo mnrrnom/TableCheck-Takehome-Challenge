@@ -1,4 +1,5 @@
 using lequeuer.api.Data;
+using lequeuer.api.Utils;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,13 @@ public static class DataContextConfigurator
                 .UseMySql(settings.ConnectionString, ServerVersion.AutoDetect(settings.ConnectionString))
                 .UseSnakeCaseNamingConvention();
         });
+    }
+    
+    public static void MigrateAndSeedDatabase(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+        context.Database.Migrate();
+        new Seeder(context).Seed();
     }
 }

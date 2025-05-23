@@ -24,6 +24,10 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+else
+{
+    app.MigrateAndSeedDatabase();
+}
 
 app.UseConfiguredCors();
 app.UseStaticFileServer();
